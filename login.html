@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#08030a">
+<title>رسالة خاصة ❤️</title>
+<style>
+*{box-sizing:border-box}
+body{
+margin:0;min-height:100vh;display:grid;place-items:center;
+background:#08030a;color:white;font-family:system-ui,Tahoma,sans-serif;
+padding:20px
+}
+section{
+width:100%;max-width:380px;text-align:center;padding:30px 22px;
+border:1px solid #783052;border-radius:24px;background:#130813;
+box-shadow:0 0 35px #f092
+}
+h1{color:#ff69b4}
+input,button{
+width:100%;padding:14px;border-radius:12px;
+font:inherit;margin-top:14px
+}
+input{background:#08030a;color:white;border:1px solid #a74c7c}
+button{border:0;background:#ff399d;color:white;font-weight:bold}
+#msg{color:#ff9bcf;min-height:25px}
+</style>
+</head>
+<body>
+<section>
+<h1>بنوتت المزعج 🥹🎀</h1>
+<p>فيه حاجة صغيرة مستنياكي ❤️</p>
+<form id="form">
+<input id="pass" type="password"
+placeholder="اكتبي كلمة السر" required>
+<button type="submit">افتحي رسالتك 💗</button>
+</form>
+<p id="msg"></p>
+</section>
+<script>
+document.getElementById('form').addEventListener('submit',async e=>{
+e.preventDefault();
+const msg=document.getElementById('msg');
+msg.textContent='ثواني يا قمر...';
+try{
+const r=await fetch('/api/login',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+password:document.getElementById('pass').value
+})
+});
+const data=await r.json();
+if(r.ok&&data.ok){location.replace('/');return}
+msg.textContent='كلمة السر مش صحيحة، جربي تاني ❤️';
+}catch(e){
+msg.textContent='في مشكلة في الاتصال، جربي تاني.';
+}
+});
+</script>
+</body>
+</html>

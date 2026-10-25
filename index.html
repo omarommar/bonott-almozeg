@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#050207">
+<title>بنوتت المزعج 🥹🎀</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;background:#050207;color:#fff;
+ font-family:system-ui,Tahoma,sans-serif;
+ min-height:100vh;overflow:hidden;
+ display:flex;align-items:center;justify-content:center;
+}
+main{
+ width:100%;max-width:560px;padding:18px;
+ text-align:center;position:relative;z-index:1;
+}
+canvas{width:100%;height:min(65vh,490px);display:block}
+h1{color:#ff65b5;font-size:clamp(25px,7vw,38px);
+ text-shadow:0 0 20px #ff168b;margin:0 0 8px}
+p{color:#f3c9df;font-size:17px;line-height:1.9}
+.small{font-size:12px;color:#99778c;margin-top:25px}
+.heart{animation:glow 2s ease-in-out infinite alternate}
+@keyframes glow{from{filter:drop-shadow(0 0 3px #ff168b)}
+to{filter:drop-shadow(0 0 15px #ff168b)}}
+</style>
+</head>
+<body>
+<main>
+<h1>بنوتت المزعج 🥹🎀</h1>
+<canvas id="heart" class="heart"></canvas>
+<p>يمكن الكلام ميكفيش، بس إنتِ ليكي مكانة مختلفة في قلبي ❤️</p>
+<p>وكل مرة القلب ده يدق، افتكري إن فيه حد بيحب يشوفك مبسوطة 🎀</p>
+<div class="small">صُنِع بحب ❤️</div>
+</main>
+<script>
+const canvas=document.getElementById('heart');
+const ctx=canvas.getContext('2d');
+let w,h,points=[],progress=0;
+function resize(){
+ const r=canvas.getBoundingClientRect();
+ const d=Math.min(devicePixelRatio||1,2);
+ w=r.width;h=r.height;
+ canvas.width=w*d;canvas.height=h*d;
+ ctx.setTransform(d,0,0,d,0,0);
+ points=[];
+ const scale=Math.min(w/34,h/34);
+ for(let i=0;i<220;i++){
+  const t=i/219*Math.PI*2;
+  const x=16*Math.pow(Math.sin(t),3);
+  const y=13*Math.cos(t)-5*Math.cos(2*t)
+          -2*Math.cos(3*t)-Math.cos(4*t);
+  points.push({x:x*scale,y:-y*scale});
+ }
+}
+function draw(time){
+ ctx.clearRect(0,0,w,h);
+ const cx=w/2,cy=h/2;
+ const beat=1+Math.sin(time/550)*.035;
+ const count=Math.floor((progress%1)*points.length);
+ const scale=Math.min(w/34,h/34)*beat;
+ ctx.save();
+ ctx.translate(cx,cy);
+ ctx.strokeStyle='#ff4fa7';
+ ctx.lineWidth=.75;
+ ctx.shadowColor='#ff168b';
+ ctx.shadowBlur=7;
+ for(let i=0;i<Math.min(count+1,points.length);i++){
+  const p=points[i];
+  ctx.beginPath();
+  ctx.moveTo(0,0);
+  ctx.lineTo(p.x*beat,p.y*beat);
+  ctx.stroke();
+ }
+ ctx.restore();
+ progress+=.0015;
+ if(progress>1)progress=0;
+ requestAnimationFrame(draw);
+}
+window.addEventListener('resize',resize);
+resize();
+requestAnimationFrame(draw);
+</script>
+</body>
+</html>
